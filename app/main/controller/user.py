@@ -10,4 +10,4 @@ async def get_users():
 
 @user_router.post("")
 async def add_user(user:CreatUser):
-    create_user(user)
+    return create_user(user)

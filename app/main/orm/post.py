@@ -1,12 +1,12 @@
 from sqlalchemy import Integer, ForeignKey, String, Column, TIMESTAMP
 from datetime import datetime
 from app.main.orm.base import Base
+from sqlalchemy.orm import mapped_column
 
-class User(Base):
-    __tablename__ = "user"
+class Post(Base):
+    __tablename__ = "post"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    username = Column(String(255),unique=True, nullable=False)
-    display_name = Column(String(255),nullable=False)
-    password = Column(String(255),nullable=False)
+    user_id = mapped_column(Integer, ForeignKey("user.id"))
+    content = Column(String(255),nullable=False)
     created_date = Column(TIMESTAMP(timezone=False), nullable=False, default=datetime.now())
     updated_date = Column(TIMESTAMP(timezone=False), nullable=False, default=datetime.now())

@@ -6,3 +6,5 @@ def create_user(userinfo):
     user = User(username=userinfo.username,password=userinfo.password,display_name = userinfo.display_name)
     db_session.add(user)
     db_session.commit()
+
+    return user.id
