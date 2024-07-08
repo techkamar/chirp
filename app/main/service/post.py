@@ -1,8 +1,6 @@
 from app.main.util.database import get_local_session
-from app.main.orm.post import Post
+from app.main.orm.post import Post,Like,Comment
 from app.main.orm.user import User
-from app.main.orm.like import Like
-from app.main.orm.comment import Comment
 from sqlalchemy import func
 
 db_session = get_local_session()
@@ -23,7 +21,7 @@ def get_posts_by_username(username):
 
 def get_all_posts():
     posts = []
-    result = db_session.query(Post.id,Post.content,Post.created_date,func.count(Like.id)).join(Like,isouter=True).group_by(Post.id).all()
+    result = db_session.query(Post.id,Post.content,Post.created_date,Post.like_count).all()
     for id,content,created_date,likecount in result:
         posts.append({'id':id,'content':content,'likedby':likecount,'created_date':created_date})
     return posts
@@ -43,6 +41,10 @@ def create_post_comment(user_id,post_id,newPost):
 
     comment = Comment(user_id=user_id, parent_post_id = post_id, comment_post_id=comment_post.id)
     db_session.add(comment)
+
+    # increment comment count
+    db_session.query(Post).filter(Post.id==post_id).update({Post.comment_count:Post.comment_count+1})
+
     db_session.commit()
 
     return comment_post.id
