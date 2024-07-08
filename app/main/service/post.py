@@ -1,7 +1,7 @@
 from app.main.util.database import get_local_session
 from app.main.orm.post import Post
 from app.main.orm.user import User
-
+from app.main.orm.like import Like
 db_session = get_local_session()
 
 def create_post(postinfo,user_id):
@@ -25,3 +25,7 @@ def get_all_posts():
         posts.append({'id':entry.id,'content':entry.content})
     return posts
     
+def like_post_by_id(post_id,user_id):
+    like = Like(user_id=user_id, post_id=post_id)
+    db_session.add(like)
+    db_session.commit()
