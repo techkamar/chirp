@@ -1,4 +1,5 @@
 from sqlalchemy import Integer, ForeignKey, String, Column, TIMESTAMP
+from sqlalchemy.schema import UniqueConstraint
 from datetime import datetime
 from app.main.orm.base import Base
 from sqlalchemy.orm import mapped_column
@@ -10,3 +11,5 @@ class Like(Base):
     post_id = mapped_column(Integer, ForeignKey("post.id"))
     created_date = Column(TIMESTAMP(timezone=False), nullable=False, default=datetime.now())
     updated_date = Column(TIMESTAMP(timezone=False), nullable=False, default=datetime.now())
+
+    __table_args__ = (UniqueConstraint('user_id', 'post_id', name='user_post_like_uc'),)

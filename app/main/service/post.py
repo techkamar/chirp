@@ -31,6 +31,7 @@ def get_all_posts():
 def like_post_by_id(post_id,user_id):
     like = Like(user_id=user_id, post_id=post_id)
     db_session.add(like)
+    db_session.query(Post).filter(Post.id==post_id).update({Post.like_count:Post.like_count+1})
     db_session.commit()
 
 
