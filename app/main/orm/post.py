@@ -3,12 +3,19 @@ from datetime import datetime
 from app.main.orm.base import Base
 from sqlalchemy.schema import UniqueConstraint
 from sqlalchemy.orm import mapped_column
+import enum
+from sqlalchemy import Integer, Enum
+
+class PostType(enum.Enum):
+    post = "POST"
+    comment = "COMMENT"
 
 class Post(Base):
     __tablename__ = "post"
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey("user.id"))
     content = Column(String(255),nullable=False)
+    type = Column(Enum(PostType))
     like_count = Column(Integer, default=0)
     comment_count = Column(Integer, default=0)
     repost_count = Column(Integer, default=0)
