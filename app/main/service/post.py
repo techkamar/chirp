@@ -53,17 +53,10 @@ def create_post_comment(user_id,post_id,newPost):
 
     return comment_post.id
 
-def get_list_of_comment_ids(comment_ids):
-    conv_list = []
-    for comment in comment_ids:
-        conv_list.append(comment.comment_post_id)
-    return conv_list
-
 def get_post_comments(post_id):
     comments = []
-    comment_ids = db_session.query(Comment).join(Post,onclause=Comment.parent_post_id==Post.id).filter(Comment.parent_post_id==post_id).all()
-    comment_ids = get_list_of_comment_ids(comment_ids)
-    comment_posts = db_session.query(Post).filter(Post.id.in_(tuple(comment_ids))).all()
+    sub_query = db_session.query(Comment.id).join(Post,onclause=Comment.parent_post_id==Post.id).filter(Comment.parent_post_id==post_id)
+    comment_posts = db_session.query(Post).filter(Post.id.in_(sub_query)).all()
     for curr_post in comment_posts:
         comments.append(
             {
