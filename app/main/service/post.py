@@ -63,7 +63,10 @@ def get_post_comments(post_id):
                 'id': curr_post.id,
                 'content': curr_post.content,
                 'user_id': curr_post.user_id,
-                'parent_post_id': post_id,
+                'likedby':curr_post.like_count,
+                'commentedby':curr_post.comment_count,
+                'sharedby':curr_post.repost_count, 
+                'quotedby':curr_post.quote_count,
                 'created_date': curr_post.created_date
             }
         )
