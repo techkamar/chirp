@@ -55,7 +55,7 @@ def create_post_comment(user_id,post_id,newPost):
 
 def get_post_comments(post_id):
     comments = []
-    sub_query = db_session.query(Comment.id).join(Post,onclause=Comment.parent_post_id==Post.id).filter(Comment.parent_post_id==post_id)
+    sub_query = db_session.query(Comment.comment_post_id).join(Post,onclause=Comment.parent_post_id==Post.id).filter(Comment.parent_post_id==post_id)
     comment_posts = db_session.query(Post).filter(Post.id.in_(sub_query)).all()
     for curr_post in comment_posts:
         comments.append(
