@@ -21,9 +21,9 @@ def get_posts_by_username(username):
 
 def get_all_posts():
     posts = []
-    result = db_session.query(Post.id,Post.content,Post.created_date,Post.like_count, Post.comment_count).filter(Post.type==PostType.post).all()
-    for id,content,created_date,likecount,comment_count in result:
-        posts.append({'id':id,'content':content,'likedby':likecount,'commentedby':comment_count,'created_date':created_date})
+    result = db_session.query(Post.id,Post.content,Post.created_date,Post.like_count, Post.comment_count, Post.repost_count, Post.quote_count).filter(Post.type==PostType.post).all()
+    for id,content,created_date,likecount,comment_count, share_count, quote_count in result:
+        posts.append({'id':id,'content':content,'likedby':likecount,'commentedby':comment_count,'sharedby':share_count, 'quotedby':quote_count,'created_date':created_date})
     return posts
     
 def like_post_by_id(post_id,user_id):
