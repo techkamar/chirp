@@ -21,3 +21,10 @@ def delete_user(user_id):
     
     return "Done"
 
+
+def get_single_user(user_id):
+    curr_user = db_session.query(User).filter(User.id==user_id).first()
+
+    details = {"display_name": curr_user.display_name, "username": curr_user.username}
+
+    return details
