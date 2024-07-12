@@ -21,16 +21,19 @@ def get_posts_by_username(username):
 
 def get_all_posts():
     posts = []
-    result = db_session.query(Post.id,Post.content,Post.created_date,Post.like_count, Post.comment_count, Post.repost_count, Post.quote_count).filter(Post.type==PostType.post).all()
+    result = db_session.query(Post.id,Post.content,Post.created_date,Post.like_count, Post.comment_count, Post.repost_count, Post.quote_count).filter(Post.type==PostType.post).order_by(Post.created_date.desc()).all()
     for id,content,created_date,likecount,comment_count, share_count, quote_count in result:
         posts.append({'id':id,'content':content,'likedby':likecount,'commentedby':comment_count,'sharedby':share_count, 'quotedby':quote_count,'created_date':created_date})
     return posts
     
 def like_post_by_id(post_id,user_id):
     like = Like(user_id=user_id, post_id=post_id)
-    db_session.add(like)
-    db_session.query(Post).filter(Post.id==post_id).update({Post.like_count:Post.like_count+1})
-    db_session.commit()
+    try:
+        db_session.add(like)
+        db_session.query(Post).filter(Post.id==post_id).update({Post.like_count:Post.like_count+1})
+        db_session.commit()
+    except:
+        pass
 
 def unlike_post_by_id(post_id,user_id):
     db_session.query(Post).filter(Post.id==post_id).filter(User.id==user_id).delete()
