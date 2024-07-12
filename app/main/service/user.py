@@ -3,6 +3,7 @@ from app.main.orm.user import User
 from app.main.orm.post import Post
 import uuid
 import os
+import shutil
 
 db_session = get_local_session()
 
@@ -25,7 +26,7 @@ def delete_user(user_id):
     return "Done"
 
 def get_new_image_file_name():
-    path = os.getwcd()
+    path = os.getcwd()+"/images"
     filename =  str(uuid.uuid4())+".png"
     return {"path": path, "filename": filename}
 
@@ -39,4 +40,6 @@ def get_single_user(user_id):
 def post_user_dp(user_id,file):
     destination_filename_detail = get_new_image_file_name()
     destination_filename_location = destination_filename_detail['path']+"/"+destination_filename_detail['filename']
-    file.write(destination_filename_location)
+    with open(destination_filename_location,"wb") as buffer:
+        shutil.copyfileobj(file.file,buffer)
+    return "Done"
