@@ -47,4 +47,10 @@ def post_user_dp(user_id,file):
     
     with open(destination_filename_location,"wb") as buffer:
         shutil.copyfileobj(file.file,buffer)
+
+    
+    # Now update user table
+    db_session.query(User).filter(User.id==user_id).update({User.display_pic:destination_filename_detail['filename']})
+    db_session.commit()
+    
     return "Done"
