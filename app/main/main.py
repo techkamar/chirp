@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.main.controller.user import user_router
 from app.main.controller.post import post_router
+from app.main.controller.images import image_router
 from app.main.util.tablemake import create_all_tables
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -21,6 +22,10 @@ tags_metadata = [
     {
         "name": "Post",
         "description": "All APIs related to Posts by user",
+    },
+    {
+        "name": "Image",
+        "description": "All APIs related to Images",
     }
 ]
 app = FastAPI(
@@ -39,3 +44,5 @@ app.add_middleware(
 
 app.include_router(user_router, tags=["User"], prefix="/api/v1")
 app.include_router(post_router, tags=["Post"], prefix="/api/v1")
+app.include_router(image_router, tags=["Image"], prefix="/api/v1")
+
