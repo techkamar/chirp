@@ -39,7 +39,12 @@ def get_single_user(user_id):
 
 def post_user_dp(user_id,file):
     destination_filename_detail = get_new_image_file_name()
+    
+    if not os.path.exists(destination_filename_detail['path']):
+        os.mkdir(destination_filename_detail['path'])
+
     destination_filename_location = destination_filename_detail['path']+"/"+destination_filename_detail['filename']
+    
     with open(destination_filename_location,"wb") as buffer:
         shutil.copyfileobj(file.file,buffer)
     return "Done"
