@@ -16,16 +16,16 @@ origins = [
 
 tags_metadata = [
     {
+        "name": "Image",
+        "description": "All APIs related to Images",
+    },
+    {
         "name": "User",
         "description": "All APIs related to user",
     },
     {
         "name": "Post",
         "description": "All APIs related to Posts by user",
-    },
-    {
-        "name": "Image",
-        "description": "All APIs related to Images",
     }
 ]
 app = FastAPI(
