@@ -37,6 +37,18 @@ def get_single_user(user_id):
 
     return details
 
+def get_all_users():
+    all_users = []
+    
+    users = db_session.query(User).all()
+
+    for user in users:
+        details = {"id": user.id, "display_name": user.display_name, "username": user.username, "display_pic": user.display_pic}
+        all_users.append(details)
+    
+    return all_users
+
+    return details
 def post_user_dp(user_id,file):
     destination_filename_detail = get_new_image_file_name()
     

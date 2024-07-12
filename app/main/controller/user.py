@@ -1,12 +1,12 @@
 from fastapi import APIRouter,UploadFile
 from app.main.model.user import CreatUser
-from app.main.service.user import create_user,delete_user,get_single_user, post_user_dp
+from app.main.service.user import create_user,delete_user,get_single_user, post_user_dp, get_all_users
 user_router = APIRouter(prefix='/user')
 
 
 @user_router.get("s")
 async def get_users():
-    return []
+    return get_all_users()
 
 @user_router.post("")
 async def add_user(user:CreatUser):
