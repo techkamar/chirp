@@ -58,7 +58,8 @@ def like_post_by_id(post_id,user_id):
         raise HTTPException(status_code=405, detail="Item not found")
 
 def unlike_post_by_id(post_id,user_id):
-    db_session.query(Post).filter(Post.id==post_id).filter(User.id==user_id).delete()
+    db_session.query(Like).filter(Like.post_id==post_id).filter(Like.user_id==user_id).delete()
+    db_session.query(Post).filter(Post.id==post_id).update({Post.like_count:Post.like_count-1})
     db_session.commit()
 
 
