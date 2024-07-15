@@ -31,7 +31,7 @@ def get_all_posts():
 def get_single_post(post_id):
     posts = db_session.query(
         Post.id,Post.content,Post.created_date,Post.like_count, Post.comment_count, Post.repost_count, Post.quote_count, Post.user_id
-        ).filter(Post.type==PostType.post).filter(Post.id==post_id).all()
+        ).filter(Post.id==post_id).all()
     
     for id,content,created_date,likecount,comment_count, share_count, quote_count,user_id in posts:
         return {
