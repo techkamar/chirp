@@ -27,6 +27,24 @@ def get_all_posts():
     for id,content,created_date,likecount,comment_count, share_count, quote_count,user_id in result:
         posts.append({'id':id,'content':content,'likedby':likecount,'commentedby':comment_count,'sharedby':share_count, 'quotedby':quote_count,'user_id':user_id,'created_date':created_date})
     return posts
+
+def get_single_post(post_id):
+    posts = db_session.query(
+        Post.id,Post.content,Post.created_date,Post.like_count, Post.comment_count, Post.repost_count, Post.quote_count, Post.user_id
+        ).filter(Post.type==PostType.post).filter(Post.id==post_id).all()
+    
+    for id,content,created_date,likecount,comment_count, share_count, quote_count,user_id in posts:
+        return {
+            'id':id,
+            'content':content,
+            'likedby':likecount,
+            'commentedby':comment_count,
+            'sharedby':share_count,
+            'quotedby':quote_count,
+            'user_id':user_id,
+            'created_date':created_date
+        }
+    
     
 def like_post_by_id(post_id,user_id):
     like = Like(user_id=user_id, post_id=post_id)

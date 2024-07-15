@@ -6,7 +6,8 @@ from app.main.service.post import (
     like_post_by_id,
     create_post_comment,
     unlike_post_by_id,
-    get_post_comments
+    get_post_comments,
+    get_single_post
 )
 from app.main.model.post import CreatePost
 import app.main.util.userinfoutil as UserInfoUtil
@@ -26,6 +27,10 @@ async def get_posts_by_uname(username):
 async def make_post(post:CreatePost, request:Request):
     user_id = UserInfoUtil.get_user_id(request)
     return create_post(post,user_id)
+
+@post_router.get("/{post_id}")
+async def get_post(post_id:str):
+    return get_single_post(post_id)
 
 # APIs related to Like
 @post_router.post("/{post_id}/like")
