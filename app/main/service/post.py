@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from app.main.util.database import get_local_session
 from app.main.orm.post import Post,PostType,Like,Comment
 from app.main.orm.user import User
@@ -54,6 +55,7 @@ def like_post_by_id(post_id,user_id):
         db_session.commit()
     except:
         db_session.rollback()
+        raise HTTPException(status_code=405, detail="Item not found")
 
 def unlike_post_by_id(post_id,user_id):
     db_session.query(Post).filter(Post.id==post_id).filter(User.id==user_id).delete()
