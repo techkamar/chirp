@@ -44,6 +44,7 @@ async def unlike_post(request:Request,post_id: int):
     unlike_post_by_id(post_id,user_id)
 
 
+# APIs related to Comments
 @post_router.post("/{post_id}/comment")
 async def create_comment(request:Request,newPost:CreatePost, post_id):
     post_id = int(post_id)
@@ -51,5 +52,8 @@ async def create_comment(request:Request,newPost:CreatePost, post_id):
     return create_post_comment(user_id,post_id,newPost)
 
 @post_router.get("/{post_id}/comments")
-async def get_all_comments_of_post(request:Request,post_id: int):
+async def get_all_comments_of_post(post_id: int):
     return get_post_comments(post_id)
+
+
+# APIs related to Repost

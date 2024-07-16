@@ -31,6 +31,10 @@ class RePost(Base):
     created_date = Column(TIMESTAMP(timezone=False), nullable=False, default=datetime.now())
     updated_date = Column(TIMESTAMP(timezone=False), nullable=False, default=datetime.now())
 
+    __table_args__ = (
+        UniqueConstraint('user_id', 'post_id', name='user_id_post_id_uc'),
+    )
+
 
 class QuotePost(Base):
     __tablename__ = "quotepost"
