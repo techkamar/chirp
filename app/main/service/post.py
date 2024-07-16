@@ -56,6 +56,20 @@ def like_post_by_id(post_id,user_id):
     except:
         db_session.rollback()
         raise HTTPException(status_code=405, detail="Item not found")
+    
+
+def get_like_user_id_by_post_ids(post_ids):
+    post_id_user_id_map = {}
+    post_ids_tuple = tuple(post_ids)
+    results = db_session.query(Like.user_id, Like.post_id).filter(Like.post_id.in_(tuple(post_ids))).all()
+    for user_id,post_id in results:
+        if post_id not in post_id_user_id_map:
+            post_id_user_id_map[post_id]=[]
+        
+        post_id_user_id_map[post_id].append(user_id)
+    
+    return post_id_user_id_map
+
 
 def unlike_post_by_id(post_id,user_id):
     db_session.query(Like).filter(Like.post_id==post_id).filter(Like.user_id==user_id).delete()

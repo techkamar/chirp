@@ -7,9 +7,10 @@ from app.main.service.post import (
     create_post_comment,
     unlike_post_by_id,
     get_post_comments,
-    get_single_post
+    get_single_post,
+    get_like_user_id_by_post_ids
 )
-from app.main.model.post import CreatePost
+from app.main.model.post import CreatePost,GetLikesByUserIds
 import app.main.util.userinfoutil as UserInfoUtil
 
 post_router = APIRouter(prefix='/post')
@@ -37,6 +38,10 @@ async def get_post(post_id:str):
 async def like_post(request:Request,post_id:int):
     user_id = UserInfoUtil.get_user_id(request)
     return like_post_by_id(post_id,user_id)
+
+@post_router.post("/like/userids")
+async def get_user_ids_by_postids(post_ids: GetLikesByUserIds):
+    return get_like_user_id_by_post_ids(post_ids.post_ids)
 
 @post_router.post("/{post_id}/unlike")
 async def unlike_post(request:Request,post_id: int):
