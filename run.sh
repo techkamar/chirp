@@ -1,3 +1,5 @@
+#/usr/bin/bash
+source ../chirpvenv/bin/activate
 export DB_NAME="chirp"
 export DB_USER="postgres"
 export DB_PASS="chirp"
