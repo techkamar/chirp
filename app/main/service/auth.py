@@ -1,6 +1,7 @@
 import jwt
 import os
 import time
+from fastapi import HTTPException
 from app.main.orm.user import User
 from app.main.util.database import get_local_session
 
@@ -28,9 +29,9 @@ def validate_credentials(username, password):
 def validate_login(auth_jwt):
     try:
         token = jwt.decode(auth_jwt,os.getenv("JWT_SECRET_KEY"),algorithms=["HS256"])
-        return True
+        return token['id']
     except:
-        return False
+        raise HTTPException(status_code=401, detail="User needs to be logged in")
 
 def get_expiry_timestamp():
     minutes = int(os.getenv("JWT_KEY_EXPIRY_IN_MINUTES","10")) # Default is 10

@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Depends
+from app.main.controller.auth import validate_auth_login
 from app.main.service.post import (
     create_post,
     get_posts_by_username,
@@ -25,8 +26,7 @@ async def get_posts_by_uname(username):
     return get_posts_by_username(username)
 
 @post_router.post("")
-async def make_post(post:CreatePost, request:Request):
-    user_id = UserInfoUtil.get_user_id(request)
+async def make_post(post:CreatePost, user_id=Depends(validate_auth_login)):
     return create_post(post,user_id)
 
 @post_router.get("/{post_id}")
@@ -35,8 +35,7 @@ async def get_post(post_id:str):
 
 # APIs related to Like
 @post_router.post("/{post_id}/like")
-async def like_post(request:Request,post_id:int):
-    user_id = UserInfoUtil.get_user_id(request)
+async def like_post(post_id:int,user_id=Depends(validate_auth_login)):
     return like_post_by_id(post_id,user_id)
 
 @post_router.post("/like/userids")
@@ -51,9 +50,7 @@ async def unlike_post(request:Request,post_id: int):
 
 # APIs related to Comments
 @post_router.post("/{post_id}/comment")
-async def create_comment(request:Request,newPost:CreatePost, post_id):
-    post_id = int(post_id)
-    user_id = UserInfoUtil.get_user_id(request)
+async def create_comment(newPost:CreatePost, post_id:int, user_id=Depends(validate_auth_login)):
     return create_post_comment(user_id,post_id,newPost)
 
 @post_router.get("/{post_id}/comments")

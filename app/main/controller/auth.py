@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Response, Request, HTTPException
+from fastapi import APIRouter, Response, Request
 from app.main.model.user import LoginRequest
 from app.main.service.auth import gen_auth_jwt_token, validate_credentials, get_expiry_timestamp,validate_login
 
@@ -24,18 +24,8 @@ async def do_logout(response: Response):
     response.delete_cookie("Authorization")
     return {"message": "User Logged Out"}
 
-@auth_router.get("/printcookies")
-async def read_cookies(request: Request):
-    resp = {
-        "Authorization": request.cookies.get('Authorization')
-    }
-    return resp
-
 @auth_router.get("/validate-login")
 async def validate_auth_login(request: Request):
     auth_jwt = request.cookies.get('Authorization')
-    isValid = validate_login(auth_jwt)
-    if isValid:
-        return True
-    else:
-        raise HTTPException(status_code=401, detail="User needs to be logged in")
+    user_id = validate_login(auth_jwt)
+    return user_id
