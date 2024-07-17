@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Response, Request
 from app.main.model.user import LoginRequest
-from app.main.service.auth import gen_auth_jwt_token, validate_credentials, get_expiry_timestamp
+from app.main.service.auth import gen_auth_jwt_token, validate_credentials, get_expiry_timestamp,validate_login
 
 auth_router = APIRouter(prefix='/auth')
 
@@ -30,3 +30,9 @@ async def read_cookies(request: Request):
         "Authorization": request.cookies.get('Authorization')
     }
     return resp
+
+@auth_router.get("/validate-login")
+async def validate_auth_login(request: Request):
+    auth_jwt = request.cookies.get('Authorization')
+    token = validate_login(auth_jwt)
+    return token

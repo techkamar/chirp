@@ -25,6 +25,13 @@ def validate_credentials(username, password):
 
     return True, user_details
 
+def validate_login(auth_jwt):
+    try:
+        token = jwt.decode(auth_jwt,os.getenv("JWT_SECRET_KEY"),algorithms=["HS256"])
+        return True
+    except:
+        return False
+
 def get_expiry_timestamp():
     minutes = int(os.getenv("JWT_KEY_EXPIRY_IN_MINUTES","10")) # Default is 10
     return int(time.time())+(60*minutes)
