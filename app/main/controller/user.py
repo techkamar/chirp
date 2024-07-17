@@ -1,6 +1,8 @@
-from fastapi import APIRouter,UploadFile
+from fastapi import APIRouter,UploadFile, Depends, Request
 from app.main.model.user import CreatUser
 from app.main.service.user import create_user,delete_user,get_single_user, post_user_dp, get_all_users
+from app.main.service.auth import validate_login
+
 user_router = APIRouter(prefix='/user')
 
 
@@ -18,6 +20,12 @@ async def del_user(user_id:int):
 
 @user_router.get("/{user_id}")
 async def get_user(user_id:int):
+    return get_single_user(user_id)
+
+@user_router.get("")
+async def get_logged_in_user(request: Request):
+    auth_jwt = request.cookies.get('Authorization')
+    user_id = validate_login(auth_jwt)
     return get_single_user(user_id)
 
 @user_router.post("/{user_id}/display_picture")

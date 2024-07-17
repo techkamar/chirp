@@ -14,10 +14,10 @@ async def do_login(login_creds: LoginRequest,response: Response):
         }
         token = gen_auth_jwt_token(payload_json)
         response.set_cookie(key="Authorization", value=token)
-        return {"message":"Logged in successfully!!"}
+        return {"message":"Logged in successfully!!", "success": True}
     else:
         response.delete_cookie("Authorization")
-        return {"error": "Login Failed..."}
+        return {"error": "Login Failed...Username or password is invalid", "success": False}
 
 @auth_router.get("/logout")
 async def do_logout(response: Response):
